@@ -3,6 +3,18 @@ import {Item} from "core/demo"
 import ChartCircles from "features/content-charts/ChartCircles"
 import ChartRectangles from "features/content-charts/ChartRectangles"
 import React, {FC, PropsWithChildren, RefObject, useCallback, useEffect, useRef, useState} from "react"
+import {
+  Area,
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Legend,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
 import css from "./AppContent.module.scss"
 
 
@@ -51,7 +63,7 @@ function usePanels(
   const [panels, setPanels] = useState<PanelModel[]>([])
 
   const handleClick = useCallback((id: string) => {
-    console.log(`i was clicked! ${id}`)
+    //console.log(`i was clicked! ${id}`)
   }, [])
 
   useEffect(() => {
@@ -63,8 +75,8 @@ function usePanels(
       if (!panel) {
         panel = {
           id: item.id,
-          sizeX: item.size,
-          sizeY: item.size,
+          sizeX: item.position.size,
+          sizeY: item.position.size,
           content: (() => chartFactory(item, handleClick)) as any,
         }
         setPanels(panels => [...panels, panel!])
@@ -74,10 +86,10 @@ function usePanels(
 
     const s: PanelModel[] = items.map(item => ({
       id: item.id,
-      sizeX: item.size,
-      sizeY: item.size,
-      col: item.col,
-      row: item.row,
+      sizeX: item.position.size,
+      sizeY: item.position.size,
+      col: item.position.col,
+      row: item.position.row,
       content: (() => chartFactory(item, handleClick)) as any,
     }))
 
@@ -90,8 +102,48 @@ function usePanels(
 
 
 function chartFactory(item: Item, clickHandler: (id: string) => void) {
-  if (item.type === "circles") {
+  if (item.chart.type === "circles") {
     return <ChartCircles id={item.id} onClick={clickHandler}/>
   }
-  return <ChartRectangles id={item.id} onClick={clickHandler}/>
+  if (item.chart.type === "rectangles") {
+    return <ChartRectangles id={item.id} onClick={clickHandler}/>
+  }
+  if (item.chart.type === "composed") {
+    const {data, render} = item.chart
+
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <ComposedChart
+          width={500}
+          height={400}
+          data={data}
+          margin={{
+            top: 20,
+            right: 80,
+            bottom: 20,
+            left: 20,
+          }}
+        >
+          <CartesianGrid stroke="#f5f5f5"/>
+          {/*<XAxis dataKey="name" label={{value: "Pages", position: "insideBottomRight", offset: 0}} scale="band"/>*/}
+          {/*<YAxis label={{value: "Index", angle: -90, position: "insideLeft"}}/>*/}
+          {/*<Tooltip/>*/}
+          {/*<Legend/>*/}
+          {Object.entries(render).map(([key, chart]) => {
+            if (chart.type === "bar") {
+              return <Bar key={key} dataKey={key} barSize={20} fill={chart.fill}/>
+            }
+            if (chart.type === "area") {
+              return <Area key={key} type="monotone" dataKey={key} fill={chart.fill} stroke={chart.stroke}/>
+            }
+            if (chart.type === "line") {
+              return <Line key={key} type="monotone" dataKey={key} stroke={chart.stroke}/>
+            }
+          })}
+
+        </ComposedChart>
+      </ResponsiveContainer>
+    )
+  }
+  return null
 }
