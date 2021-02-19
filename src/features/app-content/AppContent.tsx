@@ -1,52 +1,51 @@
-import {DashboardLayoutComponent, PanelModel} from "@syncfusion/ej2-react-layouts"
 import {Item} from "core/demo"
 import ChartCircles from "features/content-charts/ChartCircles"
 import ChartRectangles from "features/content-charts/ChartRectangles"
-import React, {FC, PropsWithChildren, RefObject, useCallback, useEffect, useRef, useState} from "react"
-import {
-  Area,
-  Bar,
-  CartesianGrid,
-  ComposedChart,
-  Legend,
-  Line,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts"
+import React, {FC, PropsWithChildren, useEffect, useState} from "react"
+import GridLayout from "react-grid-layout"
+import {Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer} from "recharts"
 import css from "./AppContent.module.scss"
 
 
 export type AppContentProps = PropsWithChildren<{
-  items: Array<Item>
-  onChangePositions?: (newItems: Array<{ id: string, row: number, col: number }>) => void
+  items: Item[]
+  setItems: React.Dispatch<React.SetStateAction<Item[]>>
 }>
 
-const AppContent: FC<AppContentProps> = ({items, onChangePositions}) => {
+const AppContent: FC<AppContentProps> = ({items, setItems}) => {
 
-  const ref = useRef<DashboardLayoutComponent>(null)
-  const panels = usePanels(items, ref)
+  const [layout, setLayout] = useState<GridLayout.Layout[]>([])
 
-  const handleChange = useCallback(() => {
-    const component = ref.current!
-    const persist = JSON.parse(component.getPersistData()) as PanelModel[]
+  useEffect(() => {
+    setLayout(layout => items.map(item => {
+      const x = item.position.col
+      const y = item.position.row
+      const w = item.position.size
+      const h = item.position.size
+      const i = item.id
+      return {x, y, w, h, i}
+    }))
+  }, [items])
 
-    onChangePositions?.(persist as Array<{ id: string, row: number, col: number }>)
-  }, [])
+  const [w, setW] = useState(600)
 
   return (
     <main className={css.main}>
       <div>
-        <DashboardLayoutComponent
-          enablePersistence
-          columns={3}
-          ref={ref}
-          panels={panels}
-          cellAspectRatio={4}
-          cellSpacing={[20, 20]}
-          change={handleChange}
-        />
+        <GridLayout
+          cols={3}
+          rowHeight={100}
+          width={w}
+          layout={layout}
+          onLayoutChange={setLayout}
+          className={"TEST_CONTAINER"}
+        >
+          {items.map(item => (
+            <div className={"TEST_ITEM"} key={item.id}>
+              {chartFactory(item)}
+            </div>
+          ))}
+        </GridLayout>
       </div>
     </main>
   )
@@ -54,59 +53,12 @@ const AppContent: FC<AppContentProps> = ({items, onChangePositions}) => {
 export default AppContent
 
 
-function usePanels(
-  items: Array<Item>,
-  ref: RefObject<DashboardLayoutComponent>,
-  onChange?: (newPanelModels: PanelModel[]) => void,
-): PanelModel[] {
-
-  const [panels, setPanels] = useState<PanelModel[]>([])
-
-  const handleClick = useCallback((id: string) => {
-    //console.log(`i was clicked! ${id}`)
-  }, [])
-
-  useEffect(() => {
-    const component = ref.current!
-
-    for (let item of items) {
-      let panel = panels.find(panel => panel.id === item.id)
-
-      if (!panel) {
-        panel = {
-          id: item.id,
-          sizeX: item.position.size,
-          sizeY: item.position.size,
-          content: (() => chartFactory(item, handleClick)) as any,
-        }
-        setPanels(panels => [...panels, panel!])
-        component.addPanel(panel)
-      }
-    }
-
-    const s: PanelModel[] = items.map(item => ({
-      id: item.id,
-      sizeX: item.position.size,
-      sizeY: item.position.size,
-      col: item.position.col,
-      row: item.position.row,
-      content: (() => chartFactory(item, handleClick)) as any,
-    }))
-
-    setPanels(s)
-
-  }, [items])
-
-  return panels
-}
-
-
-function chartFactory(item: Item, clickHandler: (id: string) => void) {
+function chartFactory(item: Item) {
   if (item.chart.type === "circles") {
-    return <ChartCircles id={item.id} onClick={clickHandler}/>
+    return <ChartCircles id={item.id}/>
   }
   if (item.chart.type === "rectangles") {
-    return <ChartRectangles id={item.id} onClick={clickHandler}/>
+    return <ChartRectangles id={item.id}/>
   }
   if (item.chart.type === "composed") {
     const {data, render} = item.chart
@@ -124,7 +76,7 @@ function chartFactory(item: Item, clickHandler: (id: string) => void) {
             left: 20,
           }}
         >
-          <CartesianGrid stroke="#f5f5f5"/>
+          <CartesianGrid stroke="#aaaaaa"/>
           {/*<XAxis dataKey="name" label={{value: "Pages", position: "insideBottomRight", offset: 0}} scale="band"/>*/}
           {/*<YAxis label={{value: "Index", angle: -90, position: "insideLeft"}}/>*/}
           {/*<Tooltip/>*/}
@@ -140,7 +92,6 @@ function chartFactory(item: Item, clickHandler: (id: string) => void) {
               return <Line key={key} type="monotone" dataKey={key} stroke={chart.stroke}/>
             }
           })}
-
         </ComposedChart>
       </ResponsiveContainer>
     )

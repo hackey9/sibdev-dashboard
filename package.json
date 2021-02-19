@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@syncfusion/ej2-layouts": "^18.4.39",
-    "@syncfusion/ej2-react-layouts": "^18.4.39",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.1",
@@ -13,6 +11,7 @@
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
     "@types/react-grid-layout": "^1.1.1",
+    "antd": "^4.12.3",
     "clsx": "^1.1.1",
     "framer-motion": "^3.5.2",
     "npm": "^7.5.4",

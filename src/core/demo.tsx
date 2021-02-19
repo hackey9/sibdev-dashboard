@@ -1,6 +1,4 @@
-import "@syncfusion/ej2-base/styles/material.css"
-import "@syncfusion/ej2-react-layouts/styles/material.css"
-import AppContent, {AppContentProps} from "features/app-content/AppContent"
+import AppContent from "features/app-content/AppContent"
 import AppHeader from "features/app-header/AppHeader"
 import AppLayout from "features/app-layout/AppLayout"
 import AppMain from "features/app-main/AppMain"
@@ -8,11 +6,12 @@ import AppNav from "features/app-nav/AppNav"
 import NavButton from "features/app-nav/NavButton"
 import React, {FC, useCallback, useEffect, useState} from "react"
 import * as rand from "utils/rand"
+import "./demo.scss"
 
 
 const Demo: FC = () => {
 
-  const [items, setItems] = useState<Array<Item>>(persistedItems)
+  const [items, setItems] = useState<Item[]>(persistedItems)
 
   useEffect(() => {
     console.log("items are updated",items)
@@ -59,11 +58,6 @@ const Demo: FC = () => {
     }])
   }, [])
 
-  const handleChangePositions: AppContentProps["onChangePositions"] = useCallback((newItems: { id: string, row: number, col: number }[]) => {
-    // i should persist this
-    console.log("item positions updated: u should persist them", newItems)
-  }, [])
-
   return (
     <AppLayout
       nav={
@@ -79,7 +73,7 @@ const Demo: FC = () => {
           content={
             <AppContent
               items={items}
-              onChangePositions={handleChangePositions}
+              setItems={setItems}
             />
           }
         />

@@ -1,16 +1,15 @@
-import Grid from "core/grid"
+import App from "core/app"
 import "index.scss"
-import React, {StrictMode} from "react"
+import React from "react"
 import ReactDOM from "react-dom"
 import reportWebVitals from "./reportWebVitals"
 
 
 ReactDOM.render(
   <>
-    {/*<App/>*/}
+    <App/>
     {/*<Demo/>*/}
-    {/*<Content/>*/}
-    <Grid/>
+    {/*<Grid/>*/}
   </>,
   document.getElementById("root"),
 )
