@@ -1,0 +1,35 @@
+.baseChart {
+  background-color: bisque;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.circles {
+  @extend .baseChart;
+
+  > span {
+    width: 30px;
+    height: 30px;
+
+    background-color: gray;
+    border-radius: 100px;
+  }
+}
+
+.rectangles {
+  @extend .baseChart;
+
+  > span {
+    width: 30px;
+    height: 30px;
+
+    background-color: gray;
+    transform: rotate(45deg);
+  }
+}
