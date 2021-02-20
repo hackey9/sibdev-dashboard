@@ -1,8 +1,9 @@
-import {Input, Tree} from "antd"
+import {ConfigProvider, Input, Tree} from "antd"
 import AppContent from "features/app-content/AppContent"
 import AppHeader from "features/app-header/AppHeader"
 import AppLayout from "features/app-layout/AppLayout"
 import AppNav from "features/app-nav/AppNav"
+import AppThemeProvider from "features/app-theme-provider/AppThemeProvider"
 import {IconType} from "rc-tree/lib/interface"
 import React, {FC, PropsWithChildren, useState} from "react"
 import {fakeInitialItems, Item} from "services/fake-widgets"
@@ -17,7 +18,7 @@ const App: FC<AppProps> = () => {
   const [items, setItems] = useState<Item[]>(fakeInitialItems)
 
   return (
-    <>
+    <AppThemeProvider>
       <AppLayout
         nav={<AppNav
           key="nav"
@@ -28,7 +29,7 @@ const App: FC<AppProps> = () => {
         header={<AppHeader key="header"/>}
         main={<AppContent key="content" items={items} setItems={setItems}/>}
       />
-    </>
+    </AppThemeProvider>
   )
 }
 export default App

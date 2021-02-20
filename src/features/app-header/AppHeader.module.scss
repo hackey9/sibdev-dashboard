@@ -16,3 +16,12 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.menu {
+  background-color: unset !important;
+
+  &.dark {
+    border-bottom-color: #656565;
+    color: #d7d7d7;
+  }
+}

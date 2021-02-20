@@ -1,0 +1,9 @@
+.widget {
+  &.dark {
+    transform: initial;
+
+    * {
+      color: #aaa !important;
+    }
+  }
+}
