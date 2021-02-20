@@ -28,18 +28,18 @@ const ComposedChart: FC<ComposedChartProps> = ({chart}) => {
         height={400}
         data={data}
         margin={{
-          top: 20,
-          right: 80,
-          bottom: 20,
-          left: 20,
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
         }}
       >
-        <CartesianGrid stroke="#aaaaaa"/>
+        <CartesianGrid stroke="#dddddd" />
         {/*<XAxis dataKey="name" label={{value: "Pages", position: "insideBottomRight", offset: 0}} scale="band"/>*/}
         {/*<YAxis label={{value: "Index", angle: -90, position: "insideLeft"}}/>*/}
         {/*<Legend/>*/}
-        <XAxis/>
-        <YAxis/>
+        {/*<XAxis/>*/}
+        {/*<YAxis/>*/}
         <Tooltip/>
         {Object.entries(render).map(([key, chart]) => {
           if (chart.type === "bar") {

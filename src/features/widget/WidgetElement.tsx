@@ -1,3 +1,4 @@
+import {MoreOutlined} from "@ant-design/icons"
 import {Card} from "antd"
 import React, {CSSProperties, FC, PropsWithChildren} from "react"
 
@@ -14,7 +15,7 @@ const cardStyle: CSSProperties = {
   height: "100%",
 }
 const cardBodyStyle: CSSProperties = {
-  height: "100%",
+  height: "calc(100% - 36px)",
 }
 
 const WidgetElement: FC<WidgetElementProps> = ({title, children}) => {
@@ -26,6 +27,7 @@ const WidgetElement: FC<WidgetElementProps> = ({title, children}) => {
       style={cardStyle}
       bodyStyle={cardBodyStyle}
       extra={<>
+        <MoreOutlined size={40}/>
       </>}
     >
       {children}

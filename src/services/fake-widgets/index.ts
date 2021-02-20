@@ -1,3 +1,6 @@
+import * as rand from "utils/rand"
+
+
 export type Item = {
   id: string
   name: string
@@ -44,43 +47,64 @@ export type HexColorString = string
 export const fakeInitialItems: Item[] = [
   {
     id: "123123141",
-    name: "Столбцовый график",
-    position: {size: 3, row: 1, col: 1},
+    name: "Показатель 1",
+    position: {size: 1, row: 0, col: 0},
     chart: {
       type: "composed",
       render: {
         bar: {type: "bar", fill: "#5e5e61"},
       },
-      data: [
-        {bar: 108},
-        {bar: 114},
-        {bar: 84},
-        {bar: 92},
-        {bar: 124},
-        {bar: 120},
-        {bar: 146},
-      ],
+      data: rand.arrayOfNumbers(10).map(() => ({
+        bar: rand.getRandomInt(20, 200),
+      })),
     },
   },
   {
     id: "74675474567",
     name: "Две линии",
-    position: {size: 2, row: 1, col: 1},
+    position: {size: 1, row: 0, col: 1},
     chart: {
       type: "composed",
       render: {
         red: {type: "line", stroke: "#ff0000"},
         blue: {type: "line", stroke: "#0000ff"},
       },
-      data: [
-        {red: 108, blue: 92},
-        {red: 114, blue: 64},
-        {red: 84, blue: 48},
-        {red: 92, blue: 100},
-        {red: 124, blue: 44},
-        {red: 120, blue: 180},
-        {red: 146, blue: 194},
-      ],
+      data: rand.arrayOfNumbers(10).map(() => ({
+        red: rand.getRandomInt(20, 200),
+        blue: rand.getRandomInt(20, 200),
+      })),
+    },
+  },
+  {
+    id: "9879794623423",
+    name: "График с заливкой",
+    position: {size: 1, row: 0, col: 2},
+    chart: {
+      type: "composed",
+      render: {
+        bars: {type: "area", fill: "#d78282", stroke: "#ff4c4c"},
+      },
+      data: rand.arrayOfNumbers(20).map(() => ({
+        bars: rand.getRandomInt(1000, 5000),
+      })),
+    },
+  },
+  {
+    id: "094803",
+    name: "Графики можно комбинировать",
+    position: {size: 3, row: 0, col: 0},
+    chart: {
+      type: "composed",
+      render: {
+        baz: {type: "bar", fill: "#d2d2d2"},
+        foo: {type: "line", stroke: "#00d55f"},
+        bar: {type: "line", stroke: "#e708b9"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+        bar: rand.getRandomInt(200, 400),
+        baz: rand.getRandomInt(150, 600),
+      })),
     },
   },
 ]

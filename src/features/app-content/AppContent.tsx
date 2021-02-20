@@ -40,12 +40,13 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
       <div ref={containerRef}>
         <GridLayout
           cols={3}
-          rowHeight={100}
+          rowHeight={135}
           width={w}
           isResizable
           layout={layout}
           onLayoutChange={setLayout}
-          className={"TEST_CONTAINER"}
+          className={css.grid}
+          margin={[30, 30]}
         >
           {items.map(item => (
             <div className={"TEST_ITEM"} key={item.id}>
@@ -60,3 +61,11 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
   )
 }
 export default AppContent
+
+
+const ResizeHandle: FC = () => {
+
+  return (
+    <div style={{width: 20, height: 20, backgroundColor: "red"}}/>
+  )
+}
