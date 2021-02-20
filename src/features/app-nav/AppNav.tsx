@@ -24,7 +24,7 @@ const AppNav: FC<AppNavProps> = ({aside}) => {
           visible={isOpen}
           closable={false}
           getContainer={false}
-          width={200}
+          width={300}
           mask={false}
           height={"100%"}
           style={drawerStyle}
