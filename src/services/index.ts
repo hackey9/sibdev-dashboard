@@ -1,8 +1,8 @@
-import * as widgets from "./widgets"
+import * as fakeWidgets from "./fake-widgets"
 
 
 const API = {
-  widgets,
+  fakeWidgets,
 }
 
 export default API

@@ -1,26 +1,24 @@
-import {Layout} from "antd"
-import React, {FC, PropsWithChildren, useCallback, useEffect, useRef, useState} from "react"
+import AppContent from "features/app-content/AppContent"
+import AppHeader from "features/app-header/AppHeader"
+import AppLayout from "features/app-layout/AppLayout"
+import AppNav from "features/app-nav/AppNav"
+import React, {FC, PropsWithChildren, useState} from "react"
+import {fakeInitialItems, Item} from "services/fake-widgets"
 
 
 export type AppProps = PropsWithChildren<{}>
 
 const App: FC<AppProps> = () => {
 
+  const [items, setItems] = useState<Item[]>(fakeInitialItems)
+
   return (
     <>
-      <Layout>
-        <Layout.Sider>
-
-        </Layout.Sider>
-        <Layout>
-          <Layout.Header>
-
-          </Layout.Header>
-          <Layout.Content>
-
-          </Layout.Content>
-        </Layout>
-      </Layout>
+      <AppLayout
+        nav={<AppNav key="nav"/>}
+        header={<AppHeader key="header"/>}
+        main={<AppContent key="content" items={items} setItems={setItems}/>}
+      />
     </>
   )
 }

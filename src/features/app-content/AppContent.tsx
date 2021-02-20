@@ -1,9 +1,10 @@
-import {Item} from "core/demo"
 import ChartCircles from "features/content-charts/ChartCircles"
 import ChartRectangles from "features/content-charts/ChartRectangles"
-import React, {FC, PropsWithChildren, useEffect, useState} from "react"
+import React, {FC, PropsWithChildren, useEffect, useState, useRef} from "react"
 import GridLayout from "react-grid-layout"
-import {Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer} from "recharts"
+import {Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts"
+import {Item} from "services/fake-widgets"
+import useResizeObserver from "use-resize-observer"
 import css from "./AppContent.module.scss"
 
 
@@ -15,6 +16,13 @@ export type AppContentProps = PropsWithChildren<{
 const AppContent: FC<AppContentProps> = ({items, setItems}) => {
 
   const [layout, setLayout] = useState<GridLayout.Layout[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+  useResizeObserver({
+    ref: containerRef, onResize: ({width}) => {
+      console.log("w changed", width)
+      width && setW(width)
+    },
+  })
 
   useEffect(() => {
     setLayout(layout => items.map(item => {
@@ -31,11 +39,12 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
 
   return (
     <main className={css.main}>
-      <div>
+      <div ref={containerRef}>
         <GridLayout
           cols={3}
           rowHeight={100}
           width={w}
+          isResizable
           layout={layout}
           onLayoutChange={setLayout}
           className={"TEST_CONTAINER"}
@@ -79,8 +88,10 @@ function chartFactory(item: Item) {
           <CartesianGrid stroke="#aaaaaa"/>
           {/*<XAxis dataKey="name" label={{value: "Pages", position: "insideBottomRight", offset: 0}} scale="band"/>*/}
           {/*<YAxis label={{value: "Index", angle: -90, position: "insideLeft"}}/>*/}
-          {/*<Tooltip/>*/}
           {/*<Legend/>*/}
+          <XAxis/>
+          <YAxis/>
+          <Tooltip/>
           {Object.entries(render).map(([key, chart]) => {
             if (chart.type === "bar") {
               return <Bar key={key} dataKey={key} barSize={20} fill={chart.fill}/>
