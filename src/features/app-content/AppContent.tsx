@@ -1,8 +1,7 @@
-import ChartCircles from "features/content-charts/ChartCircles"
-import ChartRectangles from "features/content-charts/ChartRectangles"
-import React, {FC, PropsWithChildren, useEffect, useState, useRef} from "react"
+import ChartRenderer from "features/content-charts/ChartRenderer"
+import WidgetElement from "features/widget/WidgetElement"
+import React, {FC, PropsWithChildren, useEffect, useRef, useState} from "react"
 import GridLayout from "react-grid-layout"
-import {Area, Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts"
 import {Item} from "services/fake-widgets"
 import useResizeObserver from "use-resize-observer"
 import css from "./AppContent.module.scss"
@@ -19,7 +18,6 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
   const containerRef = useRef<HTMLDivElement>(null)
   useResizeObserver({
     ref: containerRef, onResize: ({width}) => {
-      console.log("w changed", width)
       width && setW(width)
     },
   })
@@ -51,7 +49,9 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
         >
           {items.map(item => (
             <div className={"TEST_ITEM"} key={item.id}>
-              {chartFactory(item)}
+              <WidgetElement title={item.name} key={item.id}>
+                <ChartRenderer item={item}/>
+              </WidgetElement>
             </div>
           ))}
         </GridLayout>
@@ -60,52 +60,3 @@ const AppContent: FC<AppContentProps> = ({items, setItems}) => {
   )
 }
 export default AppContent
-
-
-function chartFactory(item: Item) {
-  if (item.chart.type === "circles") {
-    return <ChartCircles id={item.id}/>
-  }
-  if (item.chart.type === "rectangles") {
-    return <ChartRectangles id={item.id}/>
-  }
-  if (item.chart.type === "composed") {
-    const {data, render} = item.chart
-
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 20,
-            right: 80,
-            bottom: 20,
-            left: 20,
-          }}
-        >
-          <CartesianGrid stroke="#aaaaaa"/>
-          {/*<XAxis dataKey="name" label={{value: "Pages", position: "insideBottomRight", offset: 0}} scale="band"/>*/}
-          {/*<YAxis label={{value: "Index", angle: -90, position: "insideLeft"}}/>*/}
-          {/*<Legend/>*/}
-          <XAxis/>
-          <YAxis/>
-          <Tooltip/>
-          {Object.entries(render).map(([key, chart]) => {
-            if (chart.type === "bar") {
-              return <Bar key={key} dataKey={key} barSize={20} fill={chart.fill}/>
-            }
-            if (chart.type === "area") {
-              return <Area key={key} type="monotone" dataKey={key} fill={chart.fill} stroke={chart.stroke}/>
-            }
-            if (chart.type === "line") {
-              return <Line key={key} type="monotone" dataKey={key} stroke={chart.stroke}/>
-            }
-          })}
-        </ComposedChart>
-      </ResponsiveContainer>
-    )
-  }
-  return null
-}

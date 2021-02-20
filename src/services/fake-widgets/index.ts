@@ -12,7 +12,7 @@ export type Item = {
 export type Chart =
   | CirclesExample
   | RectanglesExample
-  | ComposedChart
+  | ComposedChartData
 
 export type ChartType =
   | "circles"
@@ -27,7 +27,7 @@ export type RectanglesExample = {
   type: "rectangles"
 }
 
-export type ComposedChart = {
+export type ComposedChartData = {
   type: "composed"
   //data: Record<string, number>[]
   data: { [key: string]: number }[]
@@ -42,11 +42,6 @@ export type ComposedChartType =
 export type HexColorString = string
 
 export const fakeInitialItems: Item[] = [
-  {id: "1613711988693", name: "Foo", position: {size: 1, row: 1, col: 1}, chart: {type: "rectangles"}},
-  {id: "1613711989113", name: "Foo", position: {size: 2, row: 1, col: 1}, chart: {type: "circles"}},
-  {id: "1613711989327", name: "Baz", position: {size: 1, row: 1, col: 1}, chart: {type: "circles"}},
-  {id: "1613711989948", name: "Foo", position: {size: 1, row: 1, col: 1}, chart: {type: "rectangles"}},
-  {id: "1613711990390", name: "Baz", position: {size: 3, row: 1, col: 1}, chart: {type: "circles"}},
   {
     id: "123123141",
     name: "Столбцовый график",
