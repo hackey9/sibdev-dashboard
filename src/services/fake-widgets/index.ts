@@ -45,6 +45,7 @@ export type ComposedChartType =
 export type HexColorString = string
 
 export const fakeInitialItems: Item[] = [
+  // row 0
   {
     id: "123123141",
     name: "Показатель 1",
@@ -89,10 +90,56 @@ export const fakeInitialItems: Item[] = [
       })),
     },
   },
+  // row 1-2
+  {
+    id: "76394586735",
+    name: "Средний график",
+    position: {size: 2, row: 1, col: 0},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "area", fill: "#8e99fa", stroke: "#0e19ff"},
+        bar: {type: "line", stroke: "#f50d0d"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+        bar: rand.getRandomInt(200, 400),
+      })),
+    },
+  },
+  {
+    id: "85475694",
+    name: "Маленький график",
+    position: {size: 1, row: 1, col: 2},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "bar", fill: "#1299ff"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+      })),
+    },
+  },
+  {
+    id: "54646987",
+    name: "Маленький график",
+    position: {size: 1, row: 2, col: 2},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "area", fill: "#ffdc8a", stroke: "#ffbc12"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+      })),
+    },
+  },
+  // row 3-5
   {
     id: "094803",
     name: "Графики можно комбинировать",
-    position: {size: 3, row: 0, col: 0},
+    position: {size: 3, row: 3, col: 0},
     chart: {
       type: "composed",
       render: {
@@ -104,6 +151,51 @@ export const fakeInitialItems: Item[] = [
         foo: rand.getRandomInt(100, 500),
         bar: rand.getRandomInt(200, 400),
         baz: rand.getRandomInt(150, 600),
+      })),
+    },
+  },
+  // row 6-7
+  {
+    id: "123123",
+    name: "Маленький график",
+    position: {size: 1, row: 6, col: 0},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "bar", fill: "#1299ff"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+      })),
+    },
+  },
+  {
+    id: "234234",
+    name: "Маленький график",
+    position: {size: 1, row: 7, col: 0},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "area", fill: "#ffdc8a", stroke: "#ffbc12"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+      })),
+    },
+  },
+  {
+    id: "345345",
+    name: "Средний график",
+    position: {size: 2, row: 6, col: 1},
+    chart: {
+      type: "composed",
+      render: {
+        foo: {type: "area", fill: "#8e99fa", stroke: "#0e19ff"},
+        bar: {type: "line", stroke: "#f50d0d"},
+      },
+      data: rand.arrayOfNumbers(15).map(() => ({
+        foo: rand.getRandomInt(100, 500),
+        bar: rand.getRandomInt(200, 400),
       })),
     },
   },
